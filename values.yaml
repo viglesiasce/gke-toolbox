@@ -30,13 +30,6 @@ prometheus:
 
 grafana:
   enabled: true
-  server:
-    setDatasource:
-      enabled: true
-      datasource:
-        name: Prometheus
-        isDefault: true
-        url: http://h-prometheus-server
 
 spinnaker:
   enabled: false
