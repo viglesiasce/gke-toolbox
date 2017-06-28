@@ -1,0 +1,39 @@
+{{- if .Values.stackdriverZipkin.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-zipkin-sd
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}-zipkin
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: stackdriver-zipkin
+        image: {{ .Values.stackdriverZipkin.image.repository }}:{{ .Values.stackdriverZipkin.image.tag }}
+        ports:
+        - name: zipkin
+          containerPort: 9411
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-zipkin
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.test.tcpHost }}
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9411
+    targetPort: 9411
+  selector:
+    app: {{ template "fullname" . }}-zipkin
+---
+{{- end }}

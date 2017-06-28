@@ -1,0 +1,7 @@
+apiVersion: extensions/v1beta1
+description: A CI config object used by CI controller to provide CIaaS to user
+kind: ThirdPartyResource
+metadata:
+  name: ci-config.tess.io
+versions:
+- name: v1

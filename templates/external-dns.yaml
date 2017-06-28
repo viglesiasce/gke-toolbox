@@ -1,0 +1,35 @@
+{{- if .Values.externalDns.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-external-dns
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: external-dns
+        image: {{ .Values.externalDns.image.repository }}:{{ .Values.externalDns.image.tag }}
+        args:
+        {{- range $index, $value := .Values.externalDns.sources }}
+        - --source={{ $value }}
+        {{- end }}
+        {{- if .Values.externalDns.domainFilter }}
+        - --domain-filter={{ .Values.externalDns.image.repository }} 
+        {{- end }}
+        - --provider=google
+        - --google-project={{ .Values.project }}
+        - --policy={{ .Values.externalDns.policy }}
+        - --registry={{ .Values.externalDns.registry }}
+        - --txt-owner-id={{ .Values.externalDns.txtOwnerId }}
+{{- end }}

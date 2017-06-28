@@ -1,0 +1,63 @@
+# Default values for gke-helper.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+project: vic-goog
+
+externalDns:
+  enabled: true
+  image:
+    repository: registry.opensource.zalan.do/teapot/external-dns
+    tag: v0.3.0
+  sources:
+    - service
+    - ingress
+  #will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+  #domainFilter: myDomain.example.com
+  # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
+  policy: upsert-only
+  registry: txt
+  txtOwnerId: my-identifier
+
+kube-lego:
+  enabled: true
+  config:
+    LEGO_EMAIL: viglesias@google.com
+    LEGO_URL: https://acme-v01.api.letsencrypt.org/directory
+    LEGO_SECRET_NAME: lego-acme-production
+
+prometheus:
+  enabled: true
+
+grafana:
+  enabled: true
+  server:
+    setDatasource:
+      enabled: true
+      datasource:
+        name: Prometheus
+        isDefault: true
+        url: http://h-prometheus-server
+
+spinnaker:
+  enabled: false
+
+istio:
+  enabled: false
+  rbac:
+    install: true
+
+stackdriverZipkin:
+  enabled: false
+  image:
+    repository: gcr.io/stackdriver-trace-docker/zipkin-collector
+    tag: latest
+  addons:
+    zipkin:
+      enabled: false
+    prometheus:
+      enabled: false
+
+test:
+  enabled: true
+  httpHost: nginx-http.k8s.dev.vicnastea.io
+  tcpHost:  nginx-tcp.k8s.dev.vicnastea.io
