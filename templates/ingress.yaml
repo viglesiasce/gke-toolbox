@@ -1,0 +1,26 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "fullname" . }}
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  tls:
+  - hosts:
+    {{- if .Values.grafana.enabled }}
+    - grafana.{{ .Values.ingress.httpHostDomain }}
+    {{- end }}
+    secretName: {{ template "fullname" . }}
+  rules:
+  {{- if .Values.grafana.enabled }}
+  - host: grafana.{{ .Values.ingress.httpHostDomain }}
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: {{ .Release.Name }}-grafana
+          servicePort: 80
+  {{- end }}
+{{- end }}

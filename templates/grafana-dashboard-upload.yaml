@@ -1,0 +1,40 @@
+{{- if .Values.grafana.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: {{ template "fullname" . }}-grafana-datasource
+    release: "{{ .Release.Name }}"
+  name: {{ template "fullname" . }}-grafana-datasource
+spec:
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}-grafana-datasource
+        release: "{{ .Release.Name }}"
+    spec:
+      containers:
+      - name: {{ template "fullname" . }}-grafana-datasource
+        image: appropriate/curl:latest
+        env:
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-grafana
+              key: grafana-admin-user
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-grafana
+              key: grafana-admin-password
+        args:
+          - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/datasources"
+          - "-X"
+          - POST
+          - "-H"
+          - "Content-Type: application/json;charset=UTF-8"
+          - "--data-binary"
+          - "{\"name\":\"Prometheus\",\"type\":\"prometheus\",\"url\":\"http://{{ .Release.Name }}-prometheus-server\",\"access\":\"proxy\",\"isDefault\":true}"
+      restartPolicy: OnFailure
+{{- end -}}

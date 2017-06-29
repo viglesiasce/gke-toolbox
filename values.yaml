@@ -30,6 +30,8 @@ prometheus:
 
 grafana:
   enabled: true
+  server:
+    serviceType: NodePort
 
 spinnaker:
   enabled: false
@@ -50,7 +52,7 @@ stackdriverZipkin:
     prometheus:
       enabled: false
 
-test:
+ingress:
   enabled: true
-  httpHost: nginx-http.k8s.dev.vicnastea.io
-  tcpHost:  nginx-tcp.k8s.dev.vicnastea.io
+  class: gce
+  httpHostDomain: k8s.dev.vicnastea.io
