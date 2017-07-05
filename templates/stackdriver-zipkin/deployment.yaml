@@ -22,18 +22,4 @@ spec:
         - name: zipkin
           containerPort: 9411
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ template "fullname" . }}-zipkin
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.test.tcpHost }}
-spec:
-  type: ClusterIP
-  ports:
-  - port: 9411
-    targetPort: 9411
-  selector:
-    app: {{ template "fullname" . }}-zipkin
----
 {{- end }}

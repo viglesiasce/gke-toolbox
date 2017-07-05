@@ -19,14 +19,6 @@ dependencies:
   condition: ""
   enabled: false
   import-values: null
-  name: grafana
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
-  version: 0.3.6
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
   name: spinnaker
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
@@ -47,5 +39,5 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.6.0
-digest: sha256:858a9adcef4570098892f4b47db07542e08a512a7a93b456e5d328f77f535742
-generated: 2017-06-27T21:30:18.1183982-07:00
+digest: sha256:8854724d844eba995280108e45a0b08a707768a550f61f4d2ac4dbacebf7229d
+generated: 2017-07-05T09:48:05.4633017-07:00

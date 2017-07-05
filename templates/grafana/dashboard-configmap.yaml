@@ -1,0 +1,14 @@
+{{- if .Values.grafana.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    component: grafana
+  name: {{ .Release.Name }}-grafana
+data:
+  dashboards.gke.json: |
+{{.Files.Get "config/grafana/dashboards/gke.json" | indent 4}}
+  config.grafana.ini: |
+{{.Files.Get "config/grafana/grafana.ini" | indent 4}}
+{{- end -}}

@@ -7,10 +7,6 @@ dependencies:
   version: 3.0.2
   condition: prometheus.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
-- name: grafana
-  version: 0.3.6
-  condition: grafana.enabled
-  repository: https://kubernetes-charts.storage.googleapis.com/
 - name: spinnaker
   version: 0.2.0
   condition: spinnaker.enabled

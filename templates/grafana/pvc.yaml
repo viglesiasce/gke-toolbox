@@ -1,0 +1,15 @@
+{{- if .Values.grafana.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    component: grafana
+  name: {{ .Release.Name }}-grafana
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.grafana.persistentVolume.size | quote }}
+{{- end -}}

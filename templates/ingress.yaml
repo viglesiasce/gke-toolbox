@@ -10,12 +10,12 @@ spec:
   tls:
   - hosts:
     {{- if .Values.grafana.enabled }}
-    - grafana.{{ .Values.ingress.httpHostDomain }}
+    - grafana.{{ .Values.ingress.httpHostSubDomain }}
     {{- end }}
     secretName: {{ template "fullname" . }}
   rules:
   {{- if .Values.grafana.enabled }}
-  - host: grafana.{{ .Values.ingress.httpHostDomain }}
+  - host: grafana.{{ .Values.ingress.httpHostSubDomain }}
     http:
       paths:
       - path: /*

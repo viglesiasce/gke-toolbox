@@ -1,0 +1,71 @@
+{{- if .Values.grafana.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    component: grafana
+  name: {{ .Release.Name }}-grafana
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/grafana/dashboard-configmap.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Release.Name }}
+        component: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: "{{ .Values.grafana.image.repo }}:{{ .Values.grafana.image.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-grafana
+                  key: grafana-admin-user
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-grafana
+                  key: grafana-admin-password
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 3000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+{{ toYaml .Values.grafana.resources | indent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: {{ default "/etc/grafana" .Values.grafana.configLocalPath | quote }}
+            - name: dashboard-volume
+              mountPath: {{ default "/var/lib/grafana/dashboards" .Values.grafana.dashboardLocalPath | quote }}
+            - name: storage-volume
+              mountPath: {{ default "/var/lib/grafana/data" .Values.grafana.storageLocalPath | quote }}
+              subPath: "{{ .Values.grafana.persistentVolume.subPath }}"
+      volumes:
+        - name: dashboard-volume
+          configMap:
+            name: {{ .Release.Name }}-grafana
+            items:
+            - key: dashboards.gke.json
+              path: gke.json
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-grafana
+            items:
+            - key: config.grafana.ini
+              path: grafana.ini
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-grafana
+{{- end -}}
