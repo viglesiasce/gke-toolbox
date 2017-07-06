@@ -15,7 +15,11 @@ dependencies:
   version: 0.2.1
   condition: istio.enabled
   repository: http://storage.googleapis.com/kubernetes-charts-incubator/
+- name: gitlab
+  version: 0.1.5
+  condition: gitlab.enabled
+  repository: https://charts.gitlab.io/
 - name: nginx-ingress
   version: 0.6.0
   condition: nginx-ingress.enabled
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: http://storage.googleapis.com/kubernetes-charts-incubator/

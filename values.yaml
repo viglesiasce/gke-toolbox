@@ -3,10 +3,33 @@
 # Declare variables to be passed into your templates.
 project: vic-goog
 
+prometheus:
+  enabled: true
+
+grafana:
+  enabled: true
+  serviceType: ClusterIP
+  adminUser: admin
+# Override this to set a particular password, otherwise a random string is generated
+# adminPassowrd: supersecret
+  persistentVolume:
+    size: 10Gi
+    subpath: ""
+  image:
+    repo: grafana/grafana
+    tag: 4.3.2
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
 ingress:
   enabled: true
   httpHostSubDomain: k8s.dev.vicnastea.io
-  class: gce
+  class: nginx
 
 externalDns:
   enabled: true
@@ -22,6 +45,12 @@ externalDns:
   policy: upsert-only
   registry: txt
   txtOwnerId: my-identifier
+
+nginx-ingress:
+  enabled: true
+  controller:
+    publishService:
+      enabled: true
 
 kube-lego:
   enabled: true
@@ -49,25 +78,8 @@ stackdriverZipkin:
     prometheus:
       enabled: false
 
-grafana:
-  enabled: true
-  serviceType: NodePort
-  adminUser: admin
-# Override this to set a particular password, otherwise a random string is generated
-# adminPassowrd: supersecret
-  persistentVolume:
-    size: 10Gi
-    subpath: ""
-  image:
-    repo: grafana/grafana
-    tag: 4.3.2
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
-
-prometheus:
-  enabled: true
+gitlab:
+  enabled: false
+  serviceType: ClusterIP
+  gitlabRootPassword: gke-toolbox
+  externalUrl: http://gitlab.k8s.dev.vicnastea.io

@@ -16,6 +16,7 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 ### Disabled by Default
 - [Spinnaker](https://www.spinnaker.io/) ([`chart`](https://kubeapps.com/charts/stable/spinnaker)) -> Continuous Delivery solution for Kubernetes workloads
 - [Istio](https://istio.io) ([`chart`](https://kubeapps.com/charts/incubator/istio)) -> Kubernetes native service mesh
+- [Gitlab](https://gitlab.com) ([`chart`](https://docs.gitlab.com/ee/install/kubernetes/gitlab_chart.html)) -> Source code management and continuous integration/delivery system
 
 ## Prerequisites
 1. Credentials to a Container Engine cluster with at least 3 cores and 8GB or RAM

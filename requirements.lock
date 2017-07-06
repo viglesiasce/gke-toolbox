@@ -35,9 +35,9 @@ dependencies:
   condition: ""
   enabled: false
   import-values: null
-  name: nginx-ingress
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  name: gitlab
+  repository: https://charts.gitlab.io/
   tags: null
-  version: 0.6.0
-digest: sha256:7558a41412de11ee75c6fa423c8d3e86eb2d0b8659c37bdb38646267ebafc2cb
-generated: 2017-07-05T17:54:40.7261991-07:00
+  version: 0.1.5
+digest: sha256:25619776616cc582918c4bd58078d51e2bc94f25f145a51ea4be05c9cc938ad1
+generated: 2017-07-05T22:06:18.6335336-07:00

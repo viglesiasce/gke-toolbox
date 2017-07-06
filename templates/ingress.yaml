@@ -6,21 +6,36 @@ metadata:
   annotations:
     kubernetes.io/tls-acme: "true"
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
+  {{- if .Values.grafana.enabled }}
   - hosts:
-    {{- if .Values.grafana.enabled }}
     - grafana.{{ .Values.ingress.httpHostSubDomain }}
-    {{- end }}
     secretName: {{ template "fullname" . }}
+  {{- end }} 
+  {{- if .Values.gitlab.enabled }}
+  - hosts:
+    - gitlab.{{ .Values.ingress.httpHostSubDomain }}
+    secretName: {{ template "fullname" . }}-gitlab
+  {{- end }}
   rules:
   {{- if .Values.grafana.enabled }}
   - host: grafana.{{ .Values.ingress.httpHostSubDomain }}
     http:
       paths:
-      - path: /*
+      - path: /
         backend:
           serviceName: {{ .Release.Name }}-grafana
+          servicePort: 80
+  {{- end }}
+  {{- if .Values.gitlab.enabled }}
+  - host: gitlab.{{ .Values.ingress.httpHostSubDomain }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-gitlab
           servicePort: 80
   {{- end }}
 {{- end }}
