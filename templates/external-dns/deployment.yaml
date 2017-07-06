@@ -1,4 +1,10 @@
 {{- if .Values.externalDns.enabled }}
+{{ required "You must set `project` in the values file" .Values.project }}
+{{ $kubeLegoValues := index .Values "kube-lego" }}
+{{- if $kubeLegoValues.enabled }}
+  {{ $kubeLegoEmail := $kubeLegoValues.config.LEGO_EMAIL  }}
+  {{ required "You must set `kube-lego.config.LEGO_EMAIL` in the values file" $kubeLegoEmail }}
+{{- end }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

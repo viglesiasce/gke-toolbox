@@ -1,8 +1,3 @@
-# Default values for gke-helper.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-project: vic-goog
-
 prometheus:
   enabled: true
 
@@ -26,38 +21,44 @@ grafana:
       cpu: 100m
       memory: 100Mi
 
-ingress:
-  enabled: true
-  httpHostSubDomain: k8s.dev.vicnastea.io
-  class: nginx
-
-externalDns:
-  enabled: true
-  image:
-    repository: registry.opensource.zalan.do/teapot/external-dns
-    tag: v0.3.0
-  sources:
-    - service
-    - ingress
-  #will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
-  #domainFilter: myDomain.example.com
-  # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
-  policy: upsert-only
-  registry: txt
-  txtOwnerId: my-identifier
-
 nginx-ingress:
   enabled: true
   controller:
     publishService:
       enabled: true
 
+ingress:
+  enabled: false
+  class: nginx
+## REQUIRED: Must be set to a subdomain that is configured as a Cloud DNS zone
+# httpHostSubDomain: k8s.dev.vicnastea.io
+  
+externalDns:
+  enabled: false
+## REQUIRED
+## Must be set to your GCP project Name
+# project: my-project-name
+  image:
+    repository: registry.opensource.zalan.do/teapot/external-dns
+    tag: v0.3.0
+  sources:
+    - service
+    - ingress
+# will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+# domainFilter: myDomain.example.com
+# would prevent ExternalDNS from deleting any records, omit to enable full synchronization
+  policy: upsert-only
+  registry: txt
+  txtOwnerId: my-identifier
+
 kube-lego:
-  enabled: true
+  enabled: false
   config:
-    LEGO_EMAIL: viglesias@google.com
-    LEGO_URL: https://acme-v01.api.letsencrypt.org/directory
-    LEGO_SECRET_NAME: lego-acme-production
+## REQUIRED must be set to a valid email
+    LEGO_EMAIL: user@example.org
+#   Set to https://acme-v01.api.letsencrypt.org/directory for "real" certs
+    LEGO_URL: https://acme-staging.api.letsencrypt.org/directory
+    LEGO_SECRET_NAME: lego-acme
 
 spinnaker:
   enabled: false

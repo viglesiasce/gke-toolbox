@@ -10,10 +10,10 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 - [Prometheus](https://prometheus.io/) ([`chart`](https://kubeapps.com/charts/stable/prometheus)) -> Kubernetes native monitoring and alerting of your nodes, pods, services, and controller states
 - [Grafana](https://grafana.com/) ([`chart`](https://kubeapps.com/charts/stable/grafana)) -> Flexible Dashboards for Kubernetes 
 - [Nginx Ingress](https://github.com/kubernetes/ingress/tree/master/controllers/nginx) ([`chart`](https://kubeapps.com/charts/stable/nginx-ingress)) -> Allows you to use Nginx as an ingress controller which can be more flexible than the Google HTTP(S) load balancer
-- [Kube Lego](https://github.com/jetstack/kube-lego) ([`chart`](https://kubeapps.com/charts/stable/kube-lego)) -> Automatically get TLS certificates for your ingresses
-- [External DNS](https://github.com/kubernetes-incubator/external-dns) -> Map your service and ingress IPs to DNS records in Cloud DNS
 
 ### Disabled by Default
+- [Kube Lego](https://github.com/jetstack/kube-lego) ([`chart`](https://kubeapps.com/charts/stable/kube-lego)) -> Automatically get TLS certificates for your ingresses
+- [External DNS](https://github.com/kubernetes-incubator/external-dns) -> Map your service and ingress IPs to DNS records in Cloud DNS
 - [Spinnaker](https://www.spinnaker.io/) ([`chart`](https://kubeapps.com/charts/stable/spinnaker)) -> Continuous Delivery solution for Kubernetes workloads
 - [Istio](https://istio.io) ([`chart`](https://kubeapps.com/charts/incubator/istio)) -> Kubernetes native service mesh
 - [Gitlab](https://gitlab.com) ([`chart`](https://docs.gitlab.com/ee/install/kubernetes/gitlab_chart.html)) -> Source code management and continuous integration/delivery system

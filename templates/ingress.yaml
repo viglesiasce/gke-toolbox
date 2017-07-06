@@ -1,4 +1,5 @@
 {{- if .Values.ingress.enabled }}
+{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
