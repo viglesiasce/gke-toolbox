@@ -4,7 +4,7 @@ dependencies:
   condition: kube-lego.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: prometheus
-  version: 3.0.2
+  version: 3.1.0
   condition: prometheus.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: spinnaker

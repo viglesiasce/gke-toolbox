@@ -14,7 +14,7 @@ dependencies:
   name: prometheus
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
-  version: 3.0.2
+  version: 3.1.0
 - alias: ""
   condition: ""
   enabled: false
@@ -39,5 +39,5 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.6.0
-digest: sha256:8854724d844eba995280108e45a0b08a707768a550f61f4d2ac4dbacebf7229d
-generated: 2017-07-05T09:48:05.4633017-07:00
+digest: sha256:7558a41412de11ee75c6fa423c8d3e86eb2d0b8659c37bdb38646267ebafc2cb
+generated: 2017-07-05T17:54:40.7261991-07:00
