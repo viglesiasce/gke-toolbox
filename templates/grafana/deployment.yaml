@@ -59,6 +59,8 @@ spec:
             items:
             - key: dashboards.gke.json
               path: gke.json
+            - key: dashboards.nginx.json
+              path: nginx.json
         - name: config-volume
           configMap:
             name: {{ .Release.Name }}-grafana

@@ -11,7 +11,7 @@ spec:
   tls:
   {{- if .Values.grafana.enabled }}
   - hosts:
-    - grafana.{{ .Values.ingress.httpHostSubDomain }}{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
+    - grafana.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
     secretName: {{ template "fullname" . }}
   {{- end }} 
   {{- if .Values.gitlab.enabled }}
