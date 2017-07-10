@@ -90,6 +90,9 @@ gitlab:
   serviceType: ClusterIP
   gitlabRootPassword: gke-toolbox
   externalUrl: http://gitlab.k8s.dev.vicnastea.io
+  postgresql:
+    metrics:
+      enabled: true
 
 prometheus:
   enabled: true
