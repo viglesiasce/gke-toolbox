@@ -21,6 +21,9 @@ grafana:
 nginx-ingress:
   enabled: true
   controller:
+    image:
+      repository: gcr.io/google_containers/nginx-ingress-controller
+      tag: "0.9.0-beta.10"
     stats:
       enabled: true
     publishService:
