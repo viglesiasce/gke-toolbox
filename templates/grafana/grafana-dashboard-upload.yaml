@@ -1,0 +1,134 @@
+{{- if .Values.grafana.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: {{ .Chart.Name }}
+    component: grafana
+  name: {{ .Release.Name }}-upload-dashboard-gke
+  annotations:
+   "helm.sh/hook": post-install,post-upgrade
+   "helm.sh/hook-weight": "10"
+spec:
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        component: grafana
+    spec:
+      containers:
+      - name: {{ template "name" . }}-grafana-dashboards-gke
+        image: appropriate/curl:latest
+        env:
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-grafana
+              key: grafana-admin-user
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-grafana
+              key: grafana-admin-password
+        volumeMounts:
+        - name: grafana
+          mountPath: /grafana
+        args:
+          - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/dashboards/db"
+          - "-X"
+          - POST
+          - "-H"
+          - "Content-Type: application/json;charset=UTF-8"
+          - "--data-binary"
+          - "@/grafana/dashboards.gke.json"
+      volumes:
+      - name: grafana
+        configMap:
+          name: {{ .Release.Name }}-grafana
+      restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: {{ .Chart.Name }}
+    component: grafana
+  name: {{ .Release.Name }}-upload-dashboard-nginx
+  annotations:
+   "helm.sh/hook": post-install,post-upgrade
+   "helm.sh/hook-weight": "10"
+spec:
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        component: grafana
+    spec:
+      containers:
+      - name: {{ template "name" . }}-grafana-dashboards-nginx
+        image: appropriate/curl:latest
+        env:
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-grafana
+              key: grafana-admin-user
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-grafana
+              key: grafana-admin-password
+        volumeMounts:
+        - name: grafana
+          mountPath: /grafana
+        args:
+          - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/dashboards/db"
+          - "-X"
+          - POST
+          - "-H"
+          - "Content-Type: application/json;charset=UTF-8"
+          - "--data-binary"
+          - "@/grafana/dashboards.nginx.json"
+      volumes:
+      - name: grafana
+        configMap:
+          name: {{ .Release.Name }}-grafana
+      restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{.Release.Name}}-delete-jobs"
+  labels:
+    app: {{ template "name" . }}
+    component: grafana
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-delete
+    "helm.sh/hook-weight": "9"
+spec:
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        app: {{ template "fullname" . }}
+        component: spinnaker
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: kubectl
+        hostPath:
+          path: /usr/bin/kubectl
+      containers:
+      - name: post-install-job
+        image: "lachlanevenson/k8s-kubectl:v1.6.0"
+        volumeMounts:
+        - name: kubectl
+          mountPath: /kubectl
+        command:
+        - sh
+        - -c
+        - "kubectl delete job --namespace {{ .Release.Namespace }} -l app={{ .Chart.Name }},component=grafana || true"
+---
+{{- end -}}

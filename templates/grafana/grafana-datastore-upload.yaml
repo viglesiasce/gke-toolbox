@@ -6,6 +6,9 @@ metadata:
     app: {{ template "fullname" . }}-grafana-datasource
     release: "{{ .Release.Name }}"
   name: {{ template "fullname" . }}-grafana-datasource
+  annotations:
+   "helm.sh/hook": post-install
+   "helm.sh/hook-weight": "1"
 spec:
   activeDeadlineSeconds: 300
   template:

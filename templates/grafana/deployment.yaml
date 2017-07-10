@@ -8,9 +8,6 @@ metadata:
   name: {{ .Release.Name }}-grafana
 spec:
   replicas: 1
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 0
   template:
     metadata:
       annotations:
@@ -47,8 +44,8 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: {{ default "/etc/grafana" .Values.grafana.configLocalPath | quote }}
-            - name: dashboard-volume
-              mountPath: {{ default "/var/lib/grafana/dashboards" .Values.grafana.dashboardLocalPath | quote }}
+            #- name: dashboard-volume
+            #  mountPath: {{ default "/var/lib/grafana/dashboards" .Values.grafana.dashboardLocalPath | quote }}
             - name: storage-volume
               mountPath: {{ default "/var/lib/grafana/data" .Values.grafana.storageLocalPath | quote }}
               subPath: "{{ .Values.grafana.persistentVolume.subPath }}"
