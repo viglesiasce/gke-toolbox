@@ -1,0 +1,18 @@
+{{- if .Values.istio.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio
+  labels:
+    app: {{ template "name" . }}
+    component: istio
+data:
+  mesh: |-
+{{ if .Values.istio.auth.enabled }}
+    authPolicy: MUTUAL_TLS
+{{ end }}
+    mixerAddress: {{ .Release.Name }}-istio-mixer:9091
+    discoveryAddress: istio-pilot:8080
+    ingressService: istio-ingress
+    zipkinAddress: {{ template "fullname" . }}-zipkin:9411
+{{- end }}

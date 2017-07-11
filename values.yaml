@@ -70,12 +70,29 @@ spinnaker:
   enabled: false
 
 istio:
-  enabled: false
+  enabled: true
+  auth:
+    enabled: true
+  mixer:
+    service:
+      annotations:
+        "prometheus.io/scrape": "true"
+        "prometheus.io/port": 42422
   rbac:
     install: true
+  pilot:
+    customConfigMap: true
+  addons:
+    zipkin:
+      enabled: false
+    prometheus:
+      enabled: false
+    grafana:
+      enabled: false
+
 
 stackdriverZipkin:
-  enabled: false
+  enabled: true
   image:
     repository: gcr.io/stackdriver-trace-docker/zipkin-collector
     tag: latest

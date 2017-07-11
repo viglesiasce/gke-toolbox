@@ -1,24 +1,24 @@
-{{- if .Values.grafana.enabled -}}
+{{- if and .Values.istio.enabled .Values.grafana.enabled}}
 apiVersion: batch/v1
 kind: Job
 metadata:
   labels:
-    app: {{ template "fullname" . }}-grafana-datasource
-    release: "{{ .Release.Name }}"
-  name: {{ template "fullname" . }}-grafana-datasource
+    app: {{ .Chart.Name }}
+    component: grafana
+  name: {{ .Release.Name }}-upload-dashboard-istio
   annotations:
-   "helm.sh/hook": post-install
-   "helm.sh/hook-weight": "1"
+   "helm.sh/hook": post-install,post-upgrade
+   "helm.sh/hook-weight": "10"
 spec:
   activeDeadlineSeconds: 300
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}
+        app: {{ .Chart.Name }}
         component: grafana
     spec:
       containers:
-      - name: {{ template "fullname" . }}-grafana-datasource
+      - name: {{ template "name" . }}-grafana-dashboards-istio
         image: appropriate/curl:latest
         env:
         - name: ADMIN_USER
@@ -31,13 +31,20 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-grafana
               key: grafana-admin-password
+        volumeMounts:
+        - name: grafana
+          mountPath: /grafana
         args:
-          - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/datasources"
+          - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/dashboards/db"
           - "-X"
           - POST
           - "-H"
           - "Content-Type: application/json;charset=UTF-8"
           - "--data-binary"
-          - "{\"name\":\"Prometheus\",\"type\":\"prometheus\",\"url\":\"http://{{ .Release.Name }}-prometheus-server\",\"access\":\"proxy\",\"isDefault\":true}"
+          - "@/grafana/dashboards.istio.json"
+      volumes:
+      - name: grafana
+        configMap:
+          name: {{ .Release.Name }}-grafana
       restartPolicy: OnFailure
-{{- end -}}
+{{- end }}

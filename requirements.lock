@@ -30,7 +30,7 @@ dependencies:
   name: istio
   repository: http://storage.googleapis.com/kubernetes-charts-incubator/
   tags: null
-  version: 0.2.1
+  version: 0.3.0
 - alias: ""
   condition: ""
   enabled: false
@@ -39,5 +39,13 @@ dependencies:
   repository: https://charts.gitlab.io/
   tags: null
   version: 0.1.5
-digest: sha256:25619776616cc582918c4bd58078d51e2bc94f25f145a51ea4be05c9cc938ad1
-generated: 2017-07-05T22:06:18.6335336-07:00
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
+  name: nginx-ingress
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.6.0
+digest: sha256:ebfc6f2acfa390bce964a91352d6ee18ed0fdc94beef35d17dc597c0fc19ae5b
+generated: 2017-07-10T16:59:36.7611657-07:00
