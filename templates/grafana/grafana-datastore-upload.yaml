@@ -3,8 +3,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   labels:
-    app: {{ template "fullname" . }}-grafana-datasource
-    release: "{{ .Release.Name }}"
+    app: {{ .Chart.Name }}
+    component: grafana
   name: {{ template "fullname" . }}-grafana-datasource
   annotations:
    "helm.sh/hook": post-install
@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}
+        app: {{ .Chart.Name }}
         component: grafana
     spec:
       containers:

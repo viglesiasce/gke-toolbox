@@ -113,7 +113,7 @@ spec:
       name: "{{.Release.Name}}"
       labels:
         app: {{ template "fullname" . }}
-        component: spinnaker
+        component: grafana
     spec:
       restartPolicy: OnFailure
       volumes:
