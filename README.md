@@ -1,4 +1,4 @@
-# GKE Toolbox
+![GKE Toolbox](docs/images/logo.png)
 
 ## Introduction
 
