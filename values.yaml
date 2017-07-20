@@ -70,7 +70,7 @@ spinnaker:
   enabled: false
 
 istio:
-  enabled: true
+  enabled: false
   auth:
     enabled: true
   mixer:
