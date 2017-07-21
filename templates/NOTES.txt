@@ -1,8 +1,38 @@
+{{- $nginxIngressValues := index .Values "nginx-ingress" }}
+{{- if $nginxIngressValues.enabled }}
+### Nginx Ingress Controller
+
+Create an Ingress resource with the following annoation to use the Ingress controller
+rather than the default GCE ingress controller:
+
+<snip>
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+</snip>
+
+For more information about the Nginx Ingress controller go to:
+https://github.com/kubernetes/ingress/tree/master/controllers/nginx
+
+{{- end }}
+
+{{ if .Values.grafana.enabled }}
+### GRAFANA
+
 1. Get your 'admin' user password by running:
 
    kubectl get secret --namespace {{ .Release.Namespace }} {{ .Release.Name }}-grafana -o jsonpath="{.data.grafana-admin-password}" | base64 --decode ; echo
 
 2. Get the Grafana URL to visit by running these commands in the same shell:
 
-    export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ .Release.Name }}-grafana" -o jsonpath="{.items[0].metadata.name}")
+    export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ .Release.Name }},component=grafana" -o jsonpath="{.items[0].metadata.name}")
     kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 3000
+
+3. Goto http://localhost:3000 in you browser and login with user 'admin' and the password from step 1
+
+4. Once you are in Grafana you will see pre-configured dashboards for Prometheus and Nginx Ingress metrics.
+
+{{- end }}
