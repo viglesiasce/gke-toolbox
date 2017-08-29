@@ -38,6 +38,16 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 
         helm init
 
+1. Add repositories that we depend on:
+
+        helm repo add gke-tb.opsgoodness http://charts.opsgoodness.com/
+        helm repo add gke-tb.incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+        helm repo add gke-tb.gitlab https://charts.gitlab.io/
+
+1. Download dependent charts
+
+        helm dep up
+
 1. Install this Chart
 
         helm install -n toolbox .
