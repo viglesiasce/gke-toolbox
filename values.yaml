@@ -21,9 +21,6 @@ grafana:
 nginx-ingress:
   enabled: true
   controller:
-    image:
-      repository: gcr.io/google_containers/nginx-ingress-controller
-      tag: "0.9.0-beta.10"
     stats:
       enabled: true
     publishService:
@@ -36,6 +33,7 @@ nginx-ingress:
 ingress:
   enabled: false
   class: nginx
+  sslEnabled: false
 ## REQUIRED: Must be set to a subdomain that is configured as a Cloud DNS zone
 # httpHostSubDomain: k8s.dev.vicnastea.io
   
@@ -92,7 +90,7 @@ istio:
 
 
 stackdriverZipkin:
-  enabled: true
+  enabled: false
   image:
     repository: gcr.io/stackdriver-trace-docker/zipkin-collector
     tag: latest
@@ -112,139 +110,56 @@ gitlab:
       enabled: true
 
 prometheus:
-  enabled: true
-  server:
-    resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
-      requests:
-        cpu: 500m
-        memory: 512Mi
+  bootstrapped: yes
+  global:
+    ## Hyperkube image to use when getting CustomResourceDefinitions & cleaning up
+    ##
+    hyperkube:
+      repository: quay.io/coreos/hyperkube
+      tag: v1.7.2_coreos.0
+      pullPolicy: IfNotPresent
 
-  serverFiles:
-    prometheus.yml: |-
-      rule_files:
-        - /etc/config/rules
-        - /etc/config/alerts
+  ## Prometheus-config-reloader image to use for config and rule reloading
+  ##
+  prometheusConfigReloader:
+    repository: quay.io/coreos/prometheus-config-reloader
+    tag: v0.0.2
 
-      scrape_configs:
-        - job_name: prometheus
-          static_configs:
-            - targets:
-              - localhost:9090
+  ## Configmap-reload image to use for reloading configmaps
+  ##
+  configmapReload:
+    repository: quay.io/coreos/configmap-reload
+    tag: v0.0.1
 
-        - job_name: 'kubernetes-apiservers'
-          scrape_interval: 30s
-          kubernetes_sd_configs:
-            - role: endpoints
-          scheme: https
-          tls_config:
-            ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-            insecure_skip_verify: true
-          bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-              action: keep
-              regex: default;kubernetes;https
+  ## Prometheus-operator image
+  ##
+  image:
+    repository: quay.io/coreos/prometheus-operator
+    tag: v0.12.0
+    pullPolicy: IfNotPresent
 
-        - job_name: 'kubernetes-nodes'
-          scrape_interval: 10s
-          scheme: https
-          tls_config:
-            ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-            insecure_skip_verify: true
-          bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-          kubernetes_sd_configs:
-            - role: node
-          relabel_configs:
-            - action: labelmap
-              regex: __meta_kubernetes_node_label_(.+)
-            - target_label: __address__
-              replacement: kubernetes.default.svc:443
-            - source_labels: [__meta_kubernetes_node_name]
-              regex: (.+)
-              target_label: __metrics_path__
-              replacement: /api/v1/nodes/${1}/proxy/metrics
+  ## If enabled, prometheus-operator will create a service for scraping kubelets
+  ##
+  kubeletService:
+    enable: true
+    namespace: kube-system
+    name: kubelet
 
-        - job_name: 'kubernetes-service-endpoints'
-          scrape_interval: 10s
-          kubernetes_sd_configs:
-            - role: endpoints
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-              action: keep
-              regex: true
-            - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
-              action: replace
-              target_label: __scheme__
-              regex: (https?)
-            - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
-              action: replace
-              target_label: __metrics_path__
-              regex: (.+)
-            - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-              action: replace
-              target_label: __address__
-              regex: (.+)(?::\d+);(\d+)
-              replacement: $1:$2
-            - action: labelmap
-              regex: __meta_kubernetes_service_label_(.+)
-            - source_labels: [__meta_kubernetes_namespace]
-              action: replace
-              target_label: kubernetes_namespace
-            - source_labels: [__meta_kubernetes_service_name]
-              action: replace
-              target_label: kubernetes_name
+  ## Node labels for prometheus-operator pod assignment
+  ##
+  nodeSelector: {}
 
-        - job_name: 'kubernetes-services'
-          scrape_interval: 10s
-          metrics_path: /probe
-          params:
-            module: [http_2xx]
+  ## If true, create & use RBAC resources
+  ##
+  rbacEnable: true
 
-          kubernetes_sd_configs:
-            - role: service
-
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_probe]
-              action: keep
-              regex: true
-            - source_labels: [__address__]
-              target_label: __param_target
-            - target_label: __address__
-              replacement: blackbox
-            - source_labels: [__param_target]
-              target_label: instance
-            - action: labelmap
-              regex: __meta_kubernetes_service_label_(.+)
-            - source_labels: [__meta_kubernetes_namespace]
-              target_label: kubernetes_namespace
-            - source_labels: [__meta_kubernetes_service_name]
-              target_label: kubernetes_name
-
-        - job_name: 'kubernetes-pods'
-          scrape_interval: 30s
-          kubernetes_sd_configs:
-            - role: pod
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-              action: keep
-              regex: true
-            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-              action: replace
-              target_label: __metrics_path__
-              regex: (.+)
-            - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-              action: replace
-              regex: (.+):(?:\d+);(\d+)
-              replacement: ${1}:${2}
-              target_label: __address__
-            - action: labelmap
-              regex: __meta_kubernetes_pod_label_(.+)
-            - source_labels: [__meta_kubernetes_namespace]
-              action: replace
-              target_label: kubernetes_namespace
-            - source_labels: [__meta_kubernetes_pod_name]
-              action: replace
-              target_label: kubernetes_pod_name
+  ## Prometheus-operator resource limits & requests
+  ## Ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 100Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 50Mi

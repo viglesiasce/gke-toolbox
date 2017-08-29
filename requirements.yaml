@@ -3,10 +3,6 @@ dependencies:
   version: 0.1.10
   condition: kube-lego.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
-- name: prometheus-operator
-  version: 0.0.6
-  condition: prometheus.enabled
-  repository: http://charts.opsgoodness.com
 - name: spinnaker
   version: 0.3.2
   condition: spinnaker.enabled
@@ -20,6 +16,6 @@ dependencies:
   condition: gitlab.enabled
   repository: https://charts.gitlab.io/
 - name: nginx-ingress
-  version: 0.6.0
+  version: 0.8.1
   condition: nginx-ingress.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/

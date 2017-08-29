@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    helm.sh/hook: post-install
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "fullname" . }}-get-crds
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+      name: {{ template "fullname" . }}-get-crds
+    spec:
+      containers:
+        - name: hyperkube
+          image: "{{ .Values.prometheus.global.hyperkube.repository }}:{{ .Values.prometheus.global.hyperkube.tag }}"
+          imagePullPolicy: "{{ .Values.prometheus.global.hyperkube.pullPolicy }}"
+          command:
+            - ./kubectl
+            - get
+            - crd
+            - alertmanagers.monitoring.coreos.com
+            - prometheuses.monitoring.coreos.com
+            - servicemonitors.monitoring.coreos.com
+      restartPolicy: OnFailure
+    {{- if .Values.prometheus.rbacEnable }}
+      serviceAccountName: {{ template "fullname" . }}
+    {{- end }}
+    {{- if .Values.prometheus.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.prometheus.nodeSelector | indent 8 }}
+    {{- end }}

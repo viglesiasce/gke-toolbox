@@ -38,6 +38,6 @@ spec:
           - "-H"
           - "Content-Type: application/json;charset=UTF-8"
           - "--data-binary"
-          - "{\"name\":\"Prometheus\",\"type\":\"prometheus\",\"url\":\"http://{{ .Release.Name }}-prometheus-server\",\"access\":\"proxy\",\"isDefault\":true}"
+          - "{\"name\":\"Prometheus\",\"type\":\"prometheus\",\"url\":\"http://prometheus-operated:9090\",\"access\":\"proxy\",\"isDefault\":true}"
       restartPolicy: OnFailure
 {{- end -}}

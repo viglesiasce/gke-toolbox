@@ -2,9 +2,6 @@ dependencies:
 - name: kube-lego
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.1.10
-- name: prometheus-operator
-  repository: http://charts.opsgoodness.com
-  version: 0.0.6
 - name: spinnaker
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.3.2
@@ -16,6 +13,6 @@ dependencies:
   version: 0.1.6
 - name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 0.6.0
-digest: sha256:e5615753a19ed1e8ffa0c82823c64d9eb1ff363b86ae1d3cb6df005c1d8b6d12
-generated: 2017-08-28T21:42:58.532076862-07:00
+  version: 0.8.1
+digest: sha256:ce7ee947f821e4cc8601714b7999e5d26265bcf533ab736c11f671e5aed6ae76
+generated: 2017-08-28T23:19:17.463462415-07:00

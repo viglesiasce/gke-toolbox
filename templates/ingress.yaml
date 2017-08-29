@@ -4,21 +4,25 @@ kind: Ingress
 metadata:
   name: {{ template "fullname" . }}
   annotations:
+  {{- if .Values.ingress.sslEnabled }}
     kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+  {{- end }}
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
-    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+{{- if .Values.ingress.sslEnabled }}
   tls:
   {{- if .Values.grafana.enabled }}
   - hosts:
     - grafana.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
-    secretName: {{ template "fullname" . }}
+    secretName: {{ template "fullname" . }}-grafana
   {{- end }} 
   {{- if .Values.gitlab.enabled }}
   - hosts:
     - gitlab.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
     secretName: {{ template "fullname" . }}-gitlab
   {{- end }}
+{{- end }}
   rules:
   {{- if .Values.grafana.enabled }}
   - host: grafana.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
