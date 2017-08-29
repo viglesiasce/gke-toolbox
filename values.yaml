@@ -110,6 +110,7 @@ gitlab:
       enabled: true
 
 prometheus:
+  # Configuration adapted from https://github.com/coreos/prometheus-operator/tree/master/helm
   bootstrapped: yes
   global:
     ## Hyperkube image to use when getting CustomResourceDefinitions & cleaning up
