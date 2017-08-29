@@ -3,20 +3,20 @@ dependencies:
   version: 0.1.10
   condition: kube-lego.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
-- name: prometheus
-  version: 3.1.0
+- name: prometheus-operator
+  version: 0.0.6
   condition: prometheus.enabled
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: http://charts.opsgoodness.com
 - name: spinnaker
-  version: 0.2.0
+  version: 0.3.2
   condition: spinnaker.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: istio
-  version: 0.3.0
+  version: 0.2.6-chart5
   condition: istio.enabled
-  repository: http://storage.googleapis.com/kubernetes-charts-incubator/
+  repository: https://kubernetes-charts-incubator.storage.googleapis.com/
 - name: gitlab
-  version: 0.1.5
+  version: 0.1.6
   condition: gitlab.enabled
   repository: https://charts.gitlab.io/
 - name: nginx-ingress

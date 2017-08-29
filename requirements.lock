@@ -1,51 +1,21 @@
 dependencies:
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: kube-lego
+- name: kube-lego
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.1.10
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: prometheus
+- name: prometheus-operator
+  repository: http://charts.opsgoodness.com
+  version: 0.0.6
+- name: spinnaker
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
-  version: 3.1.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: spinnaker
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
-  version: 0.2.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: istio
-  repository: http://storage.googleapis.com/kubernetes-charts-incubator/
-  tags: null
-  version: 0.3.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: gitlab
+  version: 0.3.2
+- name: istio
+  repository: https://kubernetes-charts-incubator.storage.googleapis.com/
+  version: 0.2.6-chart5
+- name: gitlab
   repository: https://charts.gitlab.io/
-  tags: null
-  version: 0.1.5
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: nginx-ingress
+  version: 0.1.6
+- name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.6.0
-digest: sha256:ebfc6f2acfa390bce964a91352d6ee18ed0fdc94beef35d17dc597c0fc19ae5b
-generated: 2017-07-10T16:59:36.7611657-07:00
+digest: sha256:e5615753a19ed1e8ffa0c82823c64d9eb1ff363b86ae1d3cb6df005c1d8b6d12
+generated: 2017-08-28T21:42:58.532076862-07:00
