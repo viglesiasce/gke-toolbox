@@ -1,4 +1,4 @@
-{{- if and .Values.prometheus.bootstrapped (not .Release.IsInstall) -}}
+{{- if and .Values.prometheus.enabled (not .Release.IsInstall) -}}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
