@@ -11,6 +11,8 @@ data:
 {{.Files.Get "config/grafana/dashboards/gke.json" | indent 4}}
   dashboards.nginx.json: |
 {{.Files.Get "config/grafana/dashboards/nginx.json" | indent 4}}
+  dashboards.istio.json: |
+{{.Files.Get "config/grafana/dashboards/istio.json" | indent 4}}
   config.grafana.ini: |
 {{.Files.Get "config/grafana/grafana.ini" | indent 4}}
 {{- end -}}

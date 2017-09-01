@@ -6,7 +6,7 @@ metadata:
     app: {{ .Chart.Name }}
     component: grafana
     revision: "{{ .Release.Revision }}"
-  name: {{ .Release.Name }}-upload-dashboard-istio
+  name: {{ .Release.Name }}-upload-dashboard-istio-{{ .Release.Revision }}
   annotations:
    "helm.sh/hook": post-install,post-upgrade
    "helm.sh/hook-weight": "10"
@@ -36,7 +36,7 @@ spec:
         - name: grafana
           mountPath: /grafana
         args:
-          - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/dashboards/db"
+          - "http://$(ADMIN_USER):843c843c@{{ .Release.Name }}-grafana/api/dashboards/db"
           - "-X"
           - POST
           - "-H"
