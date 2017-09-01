@@ -5,6 +5,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
     component: grafana
+    revision: "{{ .Release.Revision }}"
   name: {{ .Release.Name }}-upload-dashboard-istio
   annotations:
    "helm.sh/hook": post-install,post-upgrade
@@ -47,4 +48,40 @@ spec:
         configMap:
           name: {{ .Release.Name }}-grafana
       restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{.Release.Name}}-delete-istio-jobs-{{.Release.Revision}}"
+  labels:
+    app: {{ template "name" . }}
+    component: istio
+    revision: "{{.Release.Revision}}"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-delete
+    "helm.sh/hook-weight": "9"
+spec:
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        app: {{ template "fullname" . }}
+        component: istio
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: kubectl
+        hostPath:
+          path: /usr/bin/kubectl
+      containers:
+      - name: post-install-job
+        image: "lachlanevenson/k8s-kubectl:v1.6.0"
+        volumeMounts:
+        - name: kubectl
+          mountPath: /kubectl
+        command:
+        - sh
+        - -c
+        - "kubectl delete job --namespace {{ .Release.Namespace }} -l app={{ .Chart.Name }},component=istio,revision={{sub .Release.Revision 1}} || true"
+---
 {{- end }}
