@@ -27,7 +27,6 @@ spec:
           {{- end }}
             - --prometheus-config-reloader={{ .Values.prometheus.prometheusConfigReloader.repository }}:{{ .Values.prometheus.prometheusConfigReloader.tag }}
             - --config-reloader-image={{ .Values.prometheus.configmapReload.repository }}:{{ .Values.prometheus.configmapReload.tag }}
-            - --analytics=false
           resources:
 {{ toYaml .Values.prometheus.resources | indent 12 }}
     {{- if .Values.prometheus.nodeSelector }}

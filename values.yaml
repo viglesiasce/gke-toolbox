@@ -44,7 +44,7 @@ externalDns:
 # project: my-project-name
   image:
     repository: registry.opensource.zalan.do/teapot/external-dns
-    tag: v0.3.0
+    tag: v0.4.2
   sources:
     - service
     - ingress
@@ -94,11 +94,6 @@ stackdriverZipkin:
   image:
     repository: gcr.io/stackdriver-trace-docker/zipkin-collector
     tag: latest
-  addons:
-    zipkin:
-      enabled: false
-    prometheus:
-      enabled: false
 
 gitlab:
   enabled: false
@@ -136,7 +131,7 @@ prometheus:
   ##
   image:
     repository: quay.io/coreos/prometheus-operator
-    tag: v0.12.0
+    tag: v0.13.0
     pullPolicy: IfNotPresent
 
   ## If enabled, prometheus-operator will create a service for scraping kubelets

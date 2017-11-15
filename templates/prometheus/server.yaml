@@ -1,4 +1,3 @@
-{{- if and .Values.prometheus.enabled (not .Release.IsInstall) -}}
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
@@ -24,4 +23,3 @@ spec:
     - namespace: monitoring
       name: alertmanager-main
       port: web
-{{- end }}

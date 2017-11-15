@@ -8,14 +8,10 @@ dependencies:
   condition: spinnaker.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: istio
-  version: 0.2.6-chart5
+  version: 0.2.7-chart6
   condition: istio.enabled
   repository: https://kubernetes-charts-incubator.storage.googleapis.com/
-- name: gitlab
-  version: 0.1.7
-  condition: gitlab.enabled
-  repository: https://charts.gitlab.io/
 - name: nginx-ingress
-  version: 0.8.1
+  version: 0.8.11
   condition: nginx-ingress.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/

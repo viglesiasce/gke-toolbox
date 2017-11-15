@@ -35,6 +35,8 @@ spec:
           - "http://$(ADMIN_USER):$(ADMIN_PASSWORD)@{{ .Release.Name }}-grafana/api/datasources"
           - "-X"
           - POST
+          - "--max-time"
+          - "10"
           - "-H"
           - "Content-Type: application/json;charset=UTF-8"
           - "--data-binary"

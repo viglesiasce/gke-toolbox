@@ -7,12 +7,9 @@ dependencies:
   version: 0.3.2
 - name: istio
   repository: https://kubernetes-charts-incubator.storage.googleapis.com/
-  version: 0.2.6-chart5
-- name: gitlab
-  repository: https://charts.gitlab.io/
-  version: 0.1.7
+  version: 0.2.7-chart6
 - name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 0.8.1
-digest: sha256:6c32fdca0dfe51d04a797b99fe8d7f0527df3da863d1ec74650665be2b9983a8
-generated: 2017-09-01T13:35:39.193175992-07:00
+  version: 0.8.11
+digest: sha256:7ba138ffd1666bf3598b229b554f28f8d2331210188b9befed664e8e17a51cb3
+generated: 2017-11-14T21:14:55.403821983-08:00
