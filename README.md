@@ -9,7 +9,7 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 ### Enabled by Default
 - [Prometheus](https://prometheus.io/) ([`chart`](https://kubeapps.com/charts/stable/prometheus)) -> Kubernetes native monitoring and alerting of your nodes, pods, services, and controller states
 - [Grafana](https://grafana.com/) ([`chart`](https://kubeapps.com/charts/stable/grafana)) -> Flexible Dashboards for Kubernetes 
-- [Nginx Ingress](https://github.com/kubernetes/ingress/tree/master/controllers/nginx) ([`chart`](https://kubeapps.com/charts/stable/nginx-ingress)) -> Allows you to use Nginx as an ingress controller which can be more flexible than the Google HTTP(S) load balancer
+- [Nginx Ingress](https://github.com/kubernetes/charts/tree/master/stable/nginx-ingress) ([`chart`](https://kubeapps.com/charts/stable/nginx-ingress)) -> Allows you to use Nginx as an ingress controller which can be more flexible than the Google HTTP(S) load balancer
 
 
 ### Disabled by Default
