@@ -1,12 +1,13 @@
 {{- if .Values.stackdriverZipkin.enabled }}
+{{- $serviceName := include "istio.name" . -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "fullname" . }}-zipkin
+  name: {{ $serviceName }}-{{ .Values.istio.addons.zipkin.deployment.name }}
 spec:
   type: ClusterIP
   ports:
-  - port: 9411
+  - port: {{ .Values.istio.addons.zipkin.service.externalPort }}
     targetPort: 9411
   selector:
     app: {{ template "fullname" . }}-zipkin

@@ -7,6 +7,7 @@ metadata:
     component: grafana
   name: {{ template "fullname" . }}-grafana-datasource
   annotations:
+   "helm.sh/hook-delete-policy": hook-succeeded
    "helm.sh/hook": post-install
    "helm.sh/hook-weight": "1"
 spec:
@@ -40,6 +41,6 @@ spec:
           - "-H"
           - "Content-Type: application/json;charset=UTF-8"
           - "--data-binary"
-          - "{\"name\":\"Prometheus\",\"type\":\"prometheus\",\"url\":\"http://prometheus-operated:9090\",\"access\":\"proxy\",\"isDefault\":true}"
+          - "{\"name\":\"Prometheus\",\"type\":\"prometheus\",\"url\":\"http://toolbox-prometheus:9090\",\"access\":\"proxy\",\"isDefault\":true}"
       restartPolicy: OnFailure
 {{- end -}}

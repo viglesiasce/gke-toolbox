@@ -8,10 +8,30 @@ dependencies:
   condition: spinnaker.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: istio
-  version: 0.2.7-chart6
+  version: 0.2.12-chart3
   condition: istio.enabled
   repository: https://kubernetes-charts-incubator.storage.googleapis.com/
 - name: nginx-ingress
   version: 0.8.11
   condition: nginx-ingress.enabled
   repository: https://kubernetes-charts.storage.googleapis.com/
+- name: prometheus-operator
+  version: 0.0.7
+  condition: prometheus-operator.enabled
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+- name: prometheus
+  version: 0.0.5
+  condition: prometheus.enabled
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+- name: exporter-node
+  version: 0.1.1
+  condition: prometheus.enabled
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+- name: exporter-kubernetes
+  version: 0.1.1
+  condition: prometheus.enabled
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+- name: exporter-kubelets
+  version: 0.1.1
+  condition: prometheus.enabled
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/

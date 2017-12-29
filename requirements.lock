@@ -7,9 +7,24 @@ dependencies:
   version: 0.3.2
 - name: istio
   repository: https://kubernetes-charts-incubator.storage.googleapis.com/
-  version: 0.2.7-chart6
+  version: 0.2.12-chart3
 - name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.8.11
-digest: sha256:7ba138ffd1666bf3598b229b554f28f8d2331210188b9befed664e8e17a51cb3
-generated: 2017-11-14T21:14:55.403821983-08:00
+- name: prometheus-operator
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+  version: 0.0.7
+- name: prometheus
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+  version: 0.0.5
+- name: exporter-node
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+  version: 0.1.1
+- name: exporter-kubernetes
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+  version: 0.1.1
+- name: exporter-kubelets
+  repository: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+  version: 0.1.1
+digest: sha256:343c3f30192e28012236b5b28bdfdffd68d3d2ea9457ce866812c4b2e7932fda
+generated: 2017-12-28T23:22:37.9445189-08:00

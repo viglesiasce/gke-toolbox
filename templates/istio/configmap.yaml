@@ -1,18 +1,45 @@
 {{- if .Values.istio.enabled }}
+{{- $serviceName := include "istio.name" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: istio
+  name: {{ $serviceName }}
   labels:
-    app: {{ template "name" . }}
+    app: {{ include "istio.name" . }}
     component: istio
 data:
   mesh: |-
 {{ if .Values.istio.auth.enabled }}
     authPolicy: MUTUAL_TLS
 {{ end }}
-    mixerAddress: {{ .Release.Name }}-istio-mixer:9091
-    discoveryAddress: istio-pilot:8080
-    ingressService: istio-ingress
-    zipkinAddress: {{ template "fullname" . }}-zipkin:9411
+    # Set the following variable to true to disable policy checks by the Mixer.
+    # Note that metrics will still be reported to the Mixer.
+    disablePolicyChecks: false
+    # Set enableTracing to false to disable request tracing.
+    enableTracing: true
+    #
+    # To disable the mixer completely (including metrics), comment out
+    # the following line
+    defaultConfig:
+      # See rdsRefreshDelay for explanation about this setting.
+      discoveryRefreshDelay: 1s
+      #
+      # TCP connection timeout between Envoy & the application, and between Envoys.
+      connectTimeout: 10s
+      #
+      ### ADVANCED SETTINGS #############
+      # Where should envoy's configuration be stored in the istio-proxy container
+      configPath: "/etc/istio/proxy"
+      binaryPath: "/usr/local/bin/envoy"
+      # The pseudo service name used for Envoy.
+      serviceCluster: istio-proxy
+      # These settings that determine how long an old Envoy
+      # process should be kept alive after an occasional reload.
+      drainDuration: 45s
+      parentShutdownDuration: 1m0s
+      proxyAdminPort: 15000
+      mixerAddress: istio-mixer:9091
+      discoveryAddress: {{ $serviceName }}-{{ .Values.istio.pilot.name }}.{{ .Release.Namespace }}:{{ .Values.istio.pilot.service.externalHttpDiscovery }}
+      zipkinAddress: {{ $serviceName }}-{{ .Values.istio.addons.zipkin.deployment.name }}.{{ .Release.Namespace }}:{{ .Values.istio.addons.zipkin.service.externalPort }}
+      discoveryAddress: {{ $serviceName }}-{{ .Values.istio.pilot.name }}.{{ .Release.Namespace }}:{{ .Values.istio.pilot.service.externalHttpDiscovery }}
 {{- end }}

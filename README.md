@@ -22,6 +22,7 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 ## Prerequisites
 1. Credentials to a Container Engine cluster with at least 3 cores and 8GB or RAM
 1. For external-dns, a cluster with the following scope enabled at creation: `https://www.googleapis.com/auth/ndev.clouddns.readwrite`
+1. For Istio tracing to work you must have the following scope enabled: `https://www.googleapis.com/auth/trace.append`
 
 ## Getting Started
 
@@ -41,11 +42,16 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 1. Add repositories that we depend on:
 
         helm repo add gke-tb.incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+        helm repo add coreos https://s3-eu-west-1.amazonaws.com/Coreos-charts/stable/
 
 1. Download dependent charts
 
         helm dep build
 
-1. Install this Chart
+1. Install the chart:
 
         helm install -n toolbox .
+
+1. To complete the configuration and installation of Istio and Prometheus, run:
+
+        helm upgrade toolbox . --reuse-values --set istio.istio.install=true --set prometheus.enabled=true

@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Useful tools for Container Engine clusters
 name: gke-toolbox
-version: 0.1.0
+version: 0.2.0

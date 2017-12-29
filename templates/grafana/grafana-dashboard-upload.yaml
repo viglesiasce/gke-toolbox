@@ -8,6 +8,7 @@ metadata:
     revision: "{{.Release.Revision}}"
   name: {{ .Release.Name }}-upload-dashboard-gke-{{.Release.Revision}}
   annotations:
+   "helm.sh/hook-delete-policy": hook-succeeded
    "helm.sh/hook": post-install,post-upgrade
    "helm.sh/hook-weight": "10"
 spec:
@@ -58,6 +59,7 @@ metadata:
     revision: "{{.Release.Revision}}"
   name: {{ .Release.Name }}-upload-dashboard-nginx-{{.Release.Revision}}
   annotations:
+   "helm.sh/hook-delete-policy": hook-succeeded
    "helm.sh/hook": post-install,post-upgrade
    "helm.sh/hook-weight": "10"
 spec:
@@ -98,40 +100,4 @@ spec:
         configMap:
           name: {{ .Release.Name }}-grafana
       restartPolicy: OnFailure
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: "{{.Release.Name}}-delete-jobs-{{.Release.Revision}}"
-  labels:
-    app: {{ template "name" . }}
-    component: grafana
-    revision: "{{.Release.Revision}}"
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,post-delete
-    "helm.sh/hook-weight": "9"
-spec:
-  template:
-    metadata:
-      name: "{{.Release.Name}}"
-      labels:
-        app: {{ template "fullname" . }}
-        component: grafana
-    spec:
-      restartPolicy: OnFailure
-      volumes:
-      - name: kubectl
-        hostPath:
-          path: /usr/bin/kubectl
-      containers:
-      - name: post-install-job
-        image: "lachlanevenson/k8s-kubectl:v1.6.0"
-        volumeMounts:
-        - name: kubectl
-          mountPath: /kubectl
-        command:
-        - sh
-        - -c
-        - "kubectl delete job --namespace {{ .Release.Namespace }} -l app={{ .Chart.Name }},component=grafana,revision={{sub .Release.Revision 1}} || true"
----
 {{- end -}}
