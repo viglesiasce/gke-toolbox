@@ -80,19 +80,10 @@ istio:
       enabled: false
 
 stackdriverZipkin:
-  enabled: true
+  enabled: false
   image:
     repository: gcr.io/stackdriver-trace-docker/zipkin-collector
     tag: latest
-
-gitlab:
-  enabled: false
-  serviceType: ClusterIP
-  gitlabRootPassword: gke-toolbox
-  externalUrl: http://gitlab.k8s.dev.vicnastea.io
-  postgresql:
-    metrics:
-      enabled: true
 
 prometheus-operator:
   enabled: true
