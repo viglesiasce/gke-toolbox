@@ -17,11 +17,6 @@ spec:
     - grafana.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
     secretName: {{ template "fullname" . }}-grafana
   {{- end }} 
-  {{- if .Values.gitlab.enabled }}
-  - hosts:
-    - gitlab.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
-    secretName: {{ template "fullname" . }}-gitlab
-  {{- end }}
 {{- end }}
   rules:
   {{- if .Values.grafana.enabled }}
@@ -31,15 +26,6 @@ spec:
       - path: /
         backend:
           serviceName: {{ .Release.Name }}-grafana
-          servicePort: 80
-  {{- end }}
-  {{- if .Values.gitlab.enabled }}
-  - host: gitlab.{{required "You must set `ingress.httpHostSubDomain` in the values file" .Values.ingress.httpHostSubDomain }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: {{ .Release.Name }}-gitlab
           servicePort: 80
   {{- end }}
 {{- end }}
