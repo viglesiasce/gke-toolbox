@@ -49,7 +49,7 @@ googleapis.com/auth/trace.append
 1. Add repositories that we depend on:
 
         helm repo add gke-tb.incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-        helm repo add coreos https://s3-eu-west-1.amazonaws.com/Coreos-charts/stable/
+        helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
 
 1. Download dependent charts
 
