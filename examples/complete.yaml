@@ -1,0 +1,14 @@
+kube-lego:
+  enabled: true
+  config:
+    LEGO_EMAIL: viglesiasce@gmail.com
+    LEGO_URL: https://acme-v01.api.letsencrypt.org/directory
+externalDns:
+  enabled: true
+  project: vic-goog
+ingress:
+  enabled: true
+  sslEnabled: true
+  httpHostSubDomain: test-tb.dev.vicnastea.io
+grafana:
+  serviceType: NodePort
