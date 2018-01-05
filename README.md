@@ -24,6 +24,13 @@ The GKE Toolbox is a Helm chart that installs and configures useful tools into y
 1. For external-dns, a cluster with the following scope enabled at creation: `https://www.googleapis.com/auth/ndev.clouddns.readwrite`
 1. For Istio tracing to work you must have the following scope enabled: `https://www.googleapis.com/auth/trace.append`
 
+For example:
+
+```shell
+$ gcloud container clusters create tb-test --scopes https://www.googleapis.com/auth/ndev.clouddns.readwrite,https://www.
+googleapis.com/auth/trace.append
+```
+
 ## Getting Started
 
 1. Clone this repository
